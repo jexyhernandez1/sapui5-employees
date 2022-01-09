@@ -13,33 +13,7 @@ sap.ui.define([
 
         function onInit() {
 
-            var oView = this.getView();
-            //            var i18nBundle = oView.getModel("i18n").getResourceBundle();
-
-
-            //             oJSONModel.attachRequestCompleted(function (oEventModel) {
-            //                 console.log(JSON.stringify(oJSONModel.getData()));
-            //             });
-
-            var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
-            oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
-            oView.setModel(oJSONModelEmpl, "jsonEmployees");
-
-            var oJSONModelCountries = new sap.ui.model.json.JSONModel();
-            oJSONModelCountries.loadData("./localService/mockdata/Countries.json", false);
-            oView.setModel(oJSONModelCountries, "jsonCountries");
-
-            var oJSONModelConfig = new sap.ui.model.json.JSONModel({
-                visibleID: true,
-                visibleName: true,
-                visibleCountry: true,
-                visibleCity: false,
-                visibleBtnShowCity: true,
-                visibleBtnHideCity: false
-            });
-
-            oView.setModel(oJSONModelConfig, "jsonModelConfig");
-
+            this._bus = sap.ui.getCore().getEventBus();
         };
 
         function onFilter() {
@@ -111,7 +85,7 @@ sap.ui.define([
             this._oDialogOrders.close();
         };
 
-        var Main = Controller.extend("logaligroup.employees.controller.MainView", {});
+        var Main = Controller.extend("logaligroup.employees.controller.MasterEmployee", {});
 
         Main.prototype.onValidate = function () {
             var inputEmployee = this.byId("inputEmployee");
@@ -128,6 +102,12 @@ sap.ui.define([
             }
         };
 
+        function showEmployee(oEvent){
+              var path = oEvent.getSource().getBindingContext("jsonEmployees" ).getPath();
+              this._bus.publish("flexible", "showEmployee", path); 
+
+        };   
+
         Main.prototype.onInit = onInit;
         Main.prototype.onFilter = onFilter;
         Main.prototype.onClearFilter = onClearFilter;
@@ -136,5 +116,6 @@ sap.ui.define([
         Main.prototype.onHideCity = onHideCity;
         Main.prototype.showOrders = showOrders;
         Main.prototype.onCloseOrders = onCloseOrders;   
+        Main.prototype.showEmployee = showEmployee;   
         return Main;
     });
