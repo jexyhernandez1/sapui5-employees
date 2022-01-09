@@ -19,7 +19,7 @@ function(Controller, formatter){
         incidenceModel.refresh();
         newIncidence.bindElement("incidenceModel>/" + index);
         tableIncidence.addContent(newIncidence);
-        
+
     };
     
     function onDeleteIncidence(oEvent){
