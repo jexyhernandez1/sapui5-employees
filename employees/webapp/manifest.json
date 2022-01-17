@@ -1,5 +1,5 @@
 {
-  "_version": "1.32.0", 
+  "_version": "1.32.0",
   "sap.app": {
     "id": "logaligroup.employees",
     "type": "application",
@@ -10,13 +10,20 @@
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
     "dataSources": {
-      "mainService": {
-        "uri": "/sap/opu/odata/",
+      "Northwind.svc": {
+        "uri": "/V2/Northwind/Northwind.svc/",
         "type": "OData",
         "settings": {
-          "annotations": [],
-          "localUri": "localService/metadata.xml",
-          "odataVersion": "4.0"
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
+      },
+      "YSAPUI5_SRV_01": {
+        "uri": "/sap/opu/odata/sap/YSAPUI5_SRV_01/",
+        "type": "OData",
+        "settings": {
+            "odataVersion": "2.0",
+            "localUri": "localService/YSAPUI5_SRV_01/metadata.xml"
         }
       }
     }
@@ -56,15 +63,36 @@
           "bundleName": "logaligroup.employees.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
+      "odataNorthwind": {
+        "dataSource": "Northwind.svc",
         "preload": true,
         "settings": {
-          "synchronizationMode": "None",
-          "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true,
-          "groupId": "$direct"
+          "defaultOperationMode": "Server",
+          "defaultBindingMode": "OneWay",
+          "defaultCountMode": "Request",
+          "refreshAfterChange": false
+        }
+      },
+      "incidenceModel": {
+        "type": "sap.ui.model.odata.v2.ODataModel",
+        "dataSource": "YSAPUI5_SRV_01",
+        "preload": true,
+        "settings": {
+            "defaultOperationMode": "Server",
+            "defaultBindingMode": "TwoWay",
+            "defaultCountMode": "Request",
+            "refreshAfterChange": false,
+            "useBatch": false,
+            "defaultUpdateMethod": "Put"
+        }
+      },
+      "": {
+        "dataSource": "Northwind.svc",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
         }
       }
     },
@@ -103,13 +131,12 @@
           "viewName": "Main"
         },
         "TargetMasterEmployee": {
-            "viewType": "XML",
-            "transition": "slide",
-            "clearControlAggregation": false,
-            "viewId": "MasterEmployee",
-            "viewName": "MasterEmployee"
-          }
-  
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "MasterEmployee",
+          "viewName": "MasterEmployee"
+        }
       }
     },
     "rootView": {
